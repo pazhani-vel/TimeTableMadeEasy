@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PERIOD_TIME_SLOTS } from "../constants/academicData";
 
 export default function FacultyWorkloadView({ result, days, periods }) {
   if (!result || !result.timetable) return null;
@@ -10,7 +9,7 @@ export default function FacultyWorkloadView({ result, days, periods }) {
   const staffMap = {};
   const periodsCount = Number(periods) || 8;
 
-  Object.entries(result.timetable).forEach(([batch, grid]) => {
+  Object.entries(result.timetable).forEach(([batchId, grid]) => {
     grid.forEach((dayRow, dayIdx) => {
       dayRow.forEach((cell, periodIdx) => {
         if (cell && cell.staff) {
@@ -19,11 +18,12 @@ export default function FacultyWorkloadView({ result, days, periods }) {
             staffMap[s] = [];
           }
           staffMap[s].push({
-            batch,
+            batchId,
             day: dayIdx,
             period: periodIdx,
             subject: cell.subject,
             type: cell.type,
+            lab: cell.lab,
           });
         }
       });
@@ -36,6 +36,14 @@ export default function FacultyWorkloadView({ result, days, periods }) {
 
   const activeStaffList = selectedStaff === "ALL" ? staffList : [selectedStaff];
   const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  const formatBatchName = (batchId) => {
+    const parts = batchId.split("_");
+    if (parts.length === 3) {
+      return `${parts[1]}Yr-${parts[2]}`;
+    }
+    return batchId;
+  };
 
   return (
     <div className="faculty-matrix-section">
@@ -101,7 +109,7 @@ export default function FacultyWorkloadView({ result, days, periods }) {
                             <td key={pIdx} className="td-fac-slot">
                               {match ? (
                                 <div className={`fac-pill fac-pill-${match.type}`}>
-                                  <span className="fac-batch">Batch {match.batch}</span>
+                                  <span className="fac-batch">{formatBatchName(match.batchId)}</span>
                                   <span className="fac-subj">{match.subject}</span>
                                 </div>
                               ) : (

@@ -1,0 +1,642 @@
+{
+  "courses": [
+    {
+      "semester": 1,
+      "sub_code": "EN23C01",
+      "sub_name": "Foundation English",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "MA23C01",
+      "sub_name": "Matrices and Calculus",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 1,
+        "practical": 0,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "PH23C01",
+      "sub_name": "Engineering Physics",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "ME23C01",
+      "sub_name": "Engineering Drawing and 3D Modeling",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 4,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "EE23C02",
+      "sub_name": "Fundamentals of Electrical and Electronics Engineering",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "ME23C04",
+      "sub_name": "Makerspace",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 4,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "UC23H01",
+      "sub_name": "தமிழர் மரபு / Heritage of Tamils",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 1,
+      "sub_code": "NCC/NSS/NSO/YRC",
+      "sub_name": "NCC / NSS / NSO / YRC",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 0
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "EN23C02",
+      "sub_name": "Professional Communication",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "MA23C03",
+      "sub_name": "Linear Algebra and Numerical Methods",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 1,
+        "practical": 0,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "PH23C08",
+      "sub_name": "Fundamentals of Electronic Materials and Devices",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "CY23C01",
+      "sub_name": "Engineering Chemistry",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "CS23C04",
+      "sub_name": "Programming in C",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 4,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "IT23201",
+      "sub_name": "Information Technology Essentials",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "UC23H02",
+      "sub_name": "தமிழரும் தொழில்நுட்பமும் / Tamils and Technology",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 2,
+      "sub_code": "AUDIT-I",
+      "sub_name": "Audit Course - I",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 0
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "MA23C09",
+      "sub_name": "Finite State Automata and Discrete Structures",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 1,
+        "practical": 0,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "IT23301",
+      "sub_name": "Digital Logic and Design",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "IT23302",
+      "sub_name": "Data Structures",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "IT23303",
+      "sub_name": "Database Management Systems",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "IT23304",
+      "sub_name": "Object Oriented Programming",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 2
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "IT23U01",
+      "sub_name": "Standards – IT",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 3,
+      "sub_code": "UC23U01",
+      "sub_name": "Universal Human Values",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 2
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "MA23C05",
+      "sub_name": "Probability and Statistics",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 1,
+        "practical": 0,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23401",
+      "sub_name": "Advanced Data Structures",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23C01",
+      "sub_name": "Design and Analysis of Algorithms",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23402",
+      "sub_name": "Computer Organization and Architecture",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23403",
+      "sub_name": "Software Engineering",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23C02",
+      "sub_name": "Operating Systems",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "IT23L01",
+      "sub_name": "Self-Learning Course",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "AUDIT-II",
+      "sub_name": "Audit Course - II",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 0
+      }
+    },
+    {
+      "semester": 4,
+      "sub_code": "SDC-I",
+      "sub_name": "Skill Development Course I",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 2
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IT23501",
+      "sub_name": "Computer Networks",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IT23502",
+      "sub_name": "Web Programming",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IT23503",
+      "sub_name": "Compiler Design",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IT23504",
+      "sub_name": "Machine Learning",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "PEC-I",
+      "sub_name": "Professional Elective I",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "UC23E01",
+      "sub_name": "Engineering Entrepreneurship Development",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IOC-I",
+      "sub_name": "Industry Oriented Course I",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "SDC-II",
+      "sub_name": "Skill Development Course II",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 2
+      }
+    },
+    {
+      "semester": 5,
+      "sub_code": "IT23505",
+      "sub_name": "Societal Oriented Project",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "IT23601",
+      "sub_name": "Distributed Systems and Computing",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "IT23602",
+      "sub_name": "Natural Language and Image Processing",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "ETC-I",
+      "sub_name": "Emerging Technology Course I",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "PEC-II",
+      "sub_name": "Professional Elective II",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "PEC-III",
+      "sub_name": "Professional Elective III",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "OEC-I",
+      "sub_name": "Open Elective – I",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "SDC-III",
+      "sub_name": "Skill Development Course III",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 2
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "IOC-II",
+      "sub_name": "Industry Oriented Course II",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 6,
+      "sub_code": "IT23U02",
+      "sub_name": "Perspectives of Sustainability Development",
+      "ltpc": {
+        "lecture": 2,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "IT23701",
+      "sub_name": "Cryptography and Network Security",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 2,
+        "credits": 4
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "ETC-II",
+      "sub_name": "Emerging Technology Course II",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "PEC-IV",
+      "sub_name": "Professional Elective IV",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "PEC-V",
+      "sub_name": "Professional Elective V",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "PEC-VI",
+      "sub_name": "Professional Elective VI",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "OEC-II",
+      "sub_name": "Open Elective II",
+      "ltpc": {
+        "lecture": 3,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 3
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "IOC-III",
+      "sub_name": "Industry Oriented Course III",
+      "ltpc": {
+        "lecture": 1,
+        "tutorial": 0,
+        "practical": 0,
+        "credits": 1
+      }
+    },
+    {
+      "semester": 7,
+      "sub_code": "IT23702",
+      "sub_name": "Software Development Project Laboratory",
+      "ltpc": {
+        "lecture": 0,
+        "tutorial": 0,
+        "practical": 4,
+        "credits": 2
+      }
+    }
+  ]
+}

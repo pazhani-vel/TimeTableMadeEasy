@@ -1,5 +1,5 @@
 import React from "react";
-import { PERIOD_TIME_SLOTS } from "../constants/academicData";
+import { PERIOD_TIME_SLOTS, YEARS } from "../constants/academicData";
 
 export default function PrintLayout({ result, days, periods }) {
   if (!result || !result.timetable) return null;
@@ -32,15 +32,25 @@ export default function PrintLayout({ result, days, periods }) {
     day: "numeric",
   });
 
+  const getBatchLabel = (batchId) => {
+    const parts = batchId.split("_");
+    if (parts.length === 3) {
+      const yrVal = parts[1];
+      const batchVal = parts[2];
+      const yearLabel = YEARS.find((y) => y.value === Number(yrVal))?.label || `${yrVal}th Year`;
+      return `${yearLabel} - Batch ${batchVal}`;
+    }
+    return `BATCH ${batchId}`;
+  };
+
   return (
     <div className="print-only-layout">
       {/* Official Header */}
       <div className="print-header">
         <div className="print-header-top">COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
         <div className="print-header-dept">DEPARTMENT OF INFORMATION TECHNOLOGY</div>
-        <div className="print-header-title">CLASS TIMETABLE — ACADEMIC YEAR 2026–2027</div>
+        <div className="print-header-title">DEPARTMENT CLASS TIMETABLE — ACADEMIC YEAR 2026–2027</div>
         <div className="print-meta-line">
-          <span><strong>Semester:</strong> V</span>
           <span><strong>Department:</strong> IT</span>
           <span><strong>Generated Date:</strong> {currentDate}</span>
           <span><strong>Status:</strong> {result.status}</span>
@@ -48,9 +58,9 @@ export default function PrintLayout({ result, days, periods }) {
       </div>
 
       {/* Batch Tables */}
-      {Object.entries(result.timetable).map(([batch, grid]) => (
-        <div className="print-batch-block" key={batch}>
-          <h3 className="print-batch-heading">BATCH {batch} TIMETABLE</h3>
+      {Object.entries(result.timetable).map(([batchId, grid]) => (
+        <div className="print-batch-block" key={batchId}>
+          <h3 className="print-batch-heading">{getBatchLabel(batchId).toUpperCase()} ({batchId})</h3>
           <table className="print-table">
             <thead>
               <tr>
@@ -78,8 +88,10 @@ export default function PrintLayout({ result, days, periods }) {
                     return (
                       <td key={colIdx} className="print-td-slot">
                         <div className="print-subj">{cell.subject}</div>
-                        <div className="print-staff">{cell.staff}</div>
-                        <div className="print-type">[{cell.type === "theory" ? "L" : "P"}]</div>
+                        {cell.staff && <div className="print-staff">{cell.staff}</div>}
+                        <div className="print-type">
+                          [{cell.type === "theory" ? "L" : cell.type === "lab" ? `P (${cell.lab || "Lab"})` : "Lib"}]
+                        </div>
                       </td>
                     );
                   })}

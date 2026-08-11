@@ -1,13 +1,21 @@
 import React from "react";
 
-export default function BatchStatsCard({ batch, rows, days, periods }) {
-  const batchRows = rows.filter((r) => r.batch === batch);
+export default function BatchStatsCard({ batchId, batch, year, rows, days, periods }) {
+  const batchRows = rows.filter((r) => {
+    if (batchId) {
+      return r.batch_id === batchId || `IT_${r.year}_${r.batch}` === batchId;
+    }
+    if (year && batch) {
+      return Number(r.year) === Number(year) && r.batch === batch;
+    }
+    return r.batch === batch;
+  });
   
   const totalTheory = batchRows.reduce((acc, r) => acc + (Number(r.theory_hours) || 0), 0);
   const totalLab = batchRows.reduce((acc, r) => acc + (r.has_lab ? Number(r.lab_hours) || 0 : 0), 0);
   const totalPeriodsUsed = totalTheory + totalLab;
   const maxWeeklyPeriods = (Number(days) || 5) * (Number(periods) || 8);
-  const loadPercentage = Math.round((totalPeriodsUsed / maxWeeklyPeriods) * 100);
+  const loadPercentage = maxWeeklyPeriods > 0 ? Math.round((totalPeriodsUsed / maxWeeklyPeriods) * 100) : 0;
 
   // Check for any invalid lab hours (odd numbers)
   const hasInvalidLabHours = batchRows.some((r) => r.has_lab && (Number(r.lab_hours) <= 0 || Number(r.lab_hours) % 2 !== 0));
@@ -44,7 +52,7 @@ export default function BatchStatsCard({ batch, rows, days, periods }) {
         )}
         {isOverCapacity && (
           <span className="alert-badge alert-danger">
-            ❌ Exceeds maximum weekly slot capacity ({maxWeeklyPeriods})
+            ❌ Exceeds max slot capacity ({maxWeeklyPeriods})
           </span>
         )}
         {!hasInvalidLabHours && !isOverCapacity && totalPeriodsUsed > 0 && (
