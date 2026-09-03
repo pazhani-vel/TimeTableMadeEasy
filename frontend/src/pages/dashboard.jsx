@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./dashboard.css";
 
 import {
   ALL_IT_BATCHES,
   DEFAULT_LABS,
-  DEFAULT_STAFF,
-  SAMPLE_CURRICULUM_PRESET,
   YEARS,
   BATCH_OPTIONS,
+  YEAR_TO_SEMESTERS,
+  SEMESTER_OPTIONS,
 } from "../constants/academicData";
 
 import { generateTimetable } from "../api/timetableApi";
@@ -19,338 +19,1906 @@ import TimetableGrid from "../components/TimetableGrid";
 import FacultyWorkloadView from "../components/FacultyWorkloadView";
 import PrintLayout from "../components/PrintLayout";
 
-function createEmptyRow(year = 2, batch = "B1") {
-  const batchId = `IT_${year}_${batch}`;
-  return {
-    year: Number(year),
+/*
+ * =========================================================
+ * ACADEMIC SCHEDULE ID
+ *
+ * Every Year + Batch + Semester combination is unique.
+ *
+ * Example:
+ * IT_2_B1_S3
+ * IT_2_B1_S4
+ * IT_2_B2_S3
+ *
+ * Nothing is hardcoded here.
+ * =========================================================
+ */
+
+const createScheduleId = (year, batch, semester) =>
+  `${year}__${batch}__${semester}`;
+
+
+/*
+ * =========================================================
+ * EMPTY COURSE
+ *
+ * IMPORTANT:
+ * Nothing is prefilled.
+ * =========================================================
+ */
+
+const createEmptyRow = (
+  year,
+  batch,
+  semester
+) => ({
+  year: Number(year),
+  batch,
+  semester: Number(semester),
+
+  /*
+   * Keep this ID unique to the academic schedule.
+   * Backend-facing batch_id is created separately during
+   * payload construction.
+   */
+  schedule_id: createScheduleId(
+    year,
     batch,
-    batch_id: batchId,
-    sub_code: "",
-    name: "",
-    credits: "",
-    staff: DEFAULT_STAFF[0],
-    theory_hours: 3,
-    has_lab: false,
-    lab_hours: 2,
-    lab_type: "AC",
-    subject_type: "regular",
-  };
-}
+    semester
+  ),
+
+  sub_code: "",
+  name: "",
+  credits: "",
+
+  staff: "",
+
+  theory_hours: "",
+
+  has_lab: false,
+  lab_hours: "",
+  lab_type: "",
+
+  subject_type: "",
+});
+
+
+/*
+ * =========================================================
+ * VALID ACADEMIC COMBINATIONS
+ *
+ * Comes entirely from academicData.
+ * =========================================================
+ */
+
+const getAcademicCombinations = () => {
+  const combinations = [];
+
+  ALL_IT_BATCHES.forEach((item) => {
+    const year = Number(item.year);
+    const batch = item.batch;
+
+    const semesters =
+      YEAR_TO_SEMESTERS[year] || [];
+
+    semesters.forEach((semester) => {
+      combinations.push({
+        id: createScheduleId(
+          year,
+          batch,
+          semester
+        ),
+
+        year,
+        batch,
+        semester: Number(semester),
+      });
+    });
+  });
+
+  return combinations;
+};
+
 
 export default function DashBoard() {
+
+  /*
+   * =======================================================
+   * GENERAL SETTINGS
+   * =======================================================
+   */
+
   const [days, setDays] = useState(5);
   const [periods, setPeriods] = useState(8);
 
-  const [selectedYear, setSelectedYear] = useState(2);
-  const [selectedBatch, setSelectedBatch] = useState("B1");
 
-  const [rows, setRows] = useState(() =>
-    SAMPLE_CURRICULUM_PRESET.map((item) => ({ ...item }))
+  /*
+   * =======================================================
+   * ACADEMIC COMBINATIONS
+   * =======================================================
+   */
+
+  const academicCombinations = useMemo(
+    () => getAcademicCombinations(),
+    []
   );
 
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("CONFIG"); // CONFIG | TIMETABLE | FACULTY
 
-  // Row operations
-  const updateRow = (i, field, value) => {
-    const copy = [...rows];
-    copy[i] = { ...copy[i], [field]: value };
-    // Maintain batch_id invariant if year or batch changes
-    if (field === "year" || field === "batch") {
-      const yr = field === "year" ? value : copy[i].year;
-      const bt = field === "batch" ? value : copy[i].batch;
-      copy[i].batch_id = `IT_${yr}_${bt}`;
+  /*
+   * =======================================================
+   * NEW TAB SELECTION
+   *
+   * Start empty.
+   * Nothing is automatically selected.
+   * =======================================================
+   */
+
+  const [newTabYear, setNewTabYear] =
+    useState("");
+
+  const [newTabBatch, setNewTabBatch] =
+    useState("");
+
+  const [newTabSemester, setNewTabSemester] =
+    useState("");
+
+
+  /*
+   * =======================================================
+   * OPEN TABS
+   *
+   * Start with NO tab.
+   *
+   * User explicitly chooses what to add.
+   * =======================================================
+   */
+
+  const [openTabs, setOpenTabs] =
+    useState([]);
+
+  const [activeOpenTabId, setActiveOpenTabId] =
+    useState(null);
+
+
+  /*
+   * =======================================================
+   * COURSES PER TAB
+   * =======================================================
+   */
+
+  const [rowsByTab, setRowsByTab] =
+    useState({});
+
+
+  /*
+   * =======================================================
+   * GENERAL APP STATE
+   * =======================================================
+   */
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [result, setResult] =
+    useState(null);
+
+  const [error, setError] =
+    useState("");
+
+  const [activeTab, setActiveTab] =
+    useState("CONFIG");
+
+
+  /*
+   * =======================================================
+   * ACTIVE ACADEMIC TAB
+   * =======================================================
+   */
+
+  const activeConfigTab =
+    openTabs.find(
+      (tab) =>
+        tab.id === activeOpenTabId
+    ) || null;
+
+
+  const currentYear =
+    activeConfigTab?.year ?? "";
+
+  const currentBatch =
+    activeConfigTab?.batch ?? "";
+
+  const currentSemester =
+    activeConfigTab?.semester ?? "";
+
+
+  /*
+   * =======================================================
+   * CURRENT TAB COURSES
+   * =======================================================
+   */
+
+  const rows =
+    activeOpenTabId
+      ? rowsByTab[activeOpenTabId] || []
+      : [];
+
+
+  /*
+   * =======================================================
+   * AVAILABLE BATCHES FOR SELECTED YEAR
+   * =======================================================
+   */
+
+  const availableBatchesForYear =
+    useMemo(() => {
+
+      if (newTabYear === "") {
+        return [];
+      }
+
+      const validBatches =
+        new Set(
+          ALL_IT_BATCHES
+            .filter(
+              (item) =>
+                Number(item.year) ===
+                Number(newTabYear)
+            )
+            .map(
+              (item) =>
+                item.batch
+            )
+        );
+
+      return BATCH_OPTIONS.filter(
+        (batch) =>
+          validBatches.has(
+            batch.value
+          )
+      );
+
+    }, [newTabYear]);
+
+
+  /*
+   * =======================================================
+   * AVAILABLE SEMESTERS FOR SELECTED YEAR
+   * =======================================================
+   */
+
+  const availableSemesters =
+    useMemo(() => {
+
+      if (newTabYear === "") {
+        return [];
+      }
+
+      const semesterValues =
+        YEAR_TO_SEMESTERS[
+          Number(newTabYear)
+        ] || [];
+
+      return SEMESTER_OPTIONS.filter(
+        (option) =>
+          semesterValues.includes(
+            Number(option.value)
+          )
+      );
+
+    }, [newTabYear]);
+
+
+  /*
+   * =======================================================
+   * YEAR CHANGE
+   * =======================================================
+   */
+
+  const handleNewTabYearChange =
+    (event) => {
+
+      const value =
+        event.target.value;
+
+      if (value === "") {
+        setNewTabYear("");
+        setNewTabBatch("");
+        setNewTabSemester("");
+        return;
+      }
+
+      const year =
+        Number(value);
+
+      setNewTabYear(year);
+
+      /*
+       * Select the first AVAILABLE batch
+       * from academicData.
+       */
+
+      const batches =
+        ALL_IT_BATCHES.filter(
+          (item) =>
+            Number(item.year) ===
+            year
+        );
+
+      const firstBatch =
+        batches[0]?.batch ?? "";
+
+      setNewTabBatch(
+        firstBatch
+      );
+
+      /*
+       * Select the first semester
+       * available for that year.
+       */
+
+      const semesters =
+        YEAR_TO_SEMESTERS[year] || [];
+
+      setNewTabSemester(
+        semesters.length > 0
+          ? Number(semesters[0])
+          : ""
+      );
+    };
+
+
+  /*
+   * =======================================================
+   * BATCH CHANGE
+   * =======================================================
+   */
+
+  const handleNewTabBatchChange =
+    (event) => {
+
+      setNewTabBatch(
+        event.target.value
+      );
+
+    };
+
+
+  /*
+   * =======================================================
+   * SEMESTER CHANGE
+   * =======================================================
+   */
+
+  const handleNewTabSemesterChange =
+    (event) => {
+
+      const value =
+        event.target.value;
+
+      setNewTabSemester(
+        value === ""
+          ? ""
+          : Number(value)
+      );
+
+    };
+
+
+  /*
+   * =======================================================
+   * TAB LABEL
+   * =======================================================
+   */
+
+  const getOpenTabLabel = (
+    tab
+  ) => {
+
+    const yearLabel =
+      YEARS.find(
+        (year) =>
+          Number(year.value) ===
+          Number(tab.year)
+      )?.label ||
+      String(tab.year);
+
+    const batchLabel =
+      BATCH_OPTIONS.find(
+        (batch) =>
+          batch.value ===
+          tab.batch
+      )?.label ||
+      String(tab.batch);
+
+    const semesterLabel =
+      SEMESTER_OPTIONS.find(
+        (semester) =>
+          Number(semester.value) ===
+          Number(tab.semester)
+      )?.label ||
+      `Semester ${tab.semester}`;
+
+    return `${yearLabel} - ${batchLabel} (${semesterLabel})`;
+  };
+
+
+  /*
+   * =======================================================
+   * ADD COURSE
+   * =======================================================
+   */
+
+  const addRow = (
+    params = {}
+  ) => {
+
+    if (!activeOpenTabId) {
+      return;
     }
-    setRows(copy);
+
+    const year =
+      Number(
+        params.year ??
+        currentYear
+      );
+
+    const batch =
+      params.batch ??
+      currentBatch;
+
+    const semester =
+      Number(
+        params.semester ??
+        currentSemester
+      );
+
+    const newRow =
+      createEmptyRow(
+        year,
+        batch,
+        semester
+      );
+
+    setRowsByTab(
+      (previous) => ({
+        ...previous,
+
+        [activeOpenTabId]: [
+          ...(previous[
+            activeOpenTabId
+          ] || []),
+
+          newRow,
+        ],
+      })
+    );
   };
 
-  const addRow = (params = {}) => {
-    const yr = params.year || selectedYear;
-    const bt = params.batch || selectedBatch;
-    setRows([...rows, createEmptyRow(yr, bt)]);
+
+  /*
+   * =======================================================
+   * REMOVE COURSE
+   * =======================================================
+   */
+
+  const removeRow = (
+    index
+  ) => {
+
+    if (!activeOpenTabId) {
+      return;
+    }
+
+    setRowsByTab(
+      (previous) => ({
+
+        ...previous,
+
+        [activeOpenTabId]:
+          (
+            previous[
+              activeOpenTabId
+            ] || []
+          ).filter(
+            (_, rowIndex) =>
+              rowIndex !== index
+          ),
+      })
+    );
   };
 
-  const removeRow = (i) => setRows(rows.filter((_, idx) => idx !== i));
 
-  // Presets & Reset
-  const handleLoadPreset = () => {
-    setRows(SAMPLE_CURRICULUM_PRESET.map((item) => ({ ...item })));
+  /*
+   * =======================================================
+   * UPDATE COURSE
+   * =======================================================
+   */
+
+  const updateRow = (
+    index,
+    field,
+    value
+  ) => {
+
+    if (!activeOpenTabId) {
+      return;
+    }
+
+    setRowsByTab(
+      (previous) => {
+
+        const currentRows =
+          previous[
+            activeOpenTabId
+          ] || [];
+
+        if (!currentRows[index]) {
+          return previous;
+        }
+
+        const updatedRows =
+          [...currentRows];
+
+        updatedRows[index] = {
+          ...updatedRows[index],
+          [field]: value,
+        };
+
+        /*
+         * Academic identity is controlled
+         * by the tab.
+         *
+         * Do NOT let the course row create
+         * a different academic identity.
+         */
+
+        updatedRows[index].year =
+          Number(currentYear);
+
+        updatedRows[index].batch =
+          currentBatch;
+
+        updatedRows[index].semester =
+          Number(currentSemester);
+
+        updatedRows[index].schedule_id =
+          activeOpenTabId;
+
+        return {
+          ...previous,
+
+          [activeOpenTabId]:
+            updatedRows,
+        };
+      }
+    );
+  };
+
+
+  /*
+   * =======================================================
+   * CREATE NEW TAB
+   * =======================================================
+   */
+
+  const createNewTab = () => {
+
+    setError("");
+
+    /*
+     * Validate selectors.
+     */
+
+    if (
+      newTabYear === "" ||
+      newTabBatch === "" ||
+      newTabSemester === ""
+    ) {
+
+      setError(
+        "Please select Year, Batch and Semester before adding a new tab."
+      );
+
+      return;
+    }
+
+
+    const year =
+      Number(newTabYear);
+
+    const batch =
+      newTabBatch;
+
+    const semester =
+      Number(newTabSemester);
+
+
+    /*
+     * Check that the combination
+     * actually exists in academicData.
+     */
+
+    const validCombination =
+      academicCombinations.find(
+        (item) =>
+          Number(item.year) ===
+            year &&
+          item.batch ===
+            batch &&
+          Number(item.semester) ===
+            semester
+      );
+
+
+    if (!validCombination) {
+
+      setError(
+        "The selected Year, Batch and Semester combination is not available."
+      );
+
+      return;
+    }
+
+
+    /*
+     * Check duplicate.
+     */
+
+    const alreadyOpen =
+      openTabs.some(
+        (tab) =>
+          tab.id ===
+          validCombination.id
+      );
+
+
+    if (alreadyOpen) {
+
+      setActiveOpenTabId(
+        validCombination.id
+      );
+
+      setActiveTab("CONFIG");
+
+      setError("");
+
+      return;
+    }
+
+
+    /*
+     * Create new tab.
+     */
+
+    const newTab = {
+      id:
+        validCombination.id,
+
+      year:
+        validCombination.year,
+
+      batch:
+        validCombination.batch,
+
+      semester:
+        validCombination.semester,
+    };
+
+
+    const nextTabs = [
+      ...openTabs,
+      newTab,
+    ];
+
+
+    setOpenTabs(
+      nextTabs
+    );
+
+
+    /*
+     * NEW TAB IS COMPLETELY EMPTY.
+     */
+
+    setRowsByTab(
+      (previous) => ({
+        ...previous,
+
+        [newTab.id]: [],
+      })
+    );
+
+
+    /*
+     * Immediately activate it.
+     */
+
+    setActiveOpenTabId(
+      newTab.id
+    );
+
+    setActiveTab(
+      "CONFIG"
+    );
+
+
+    /*
+     * Clear selectors so the user
+     * explicitly chooses the next one.
+     *
+     * This also prevents accidentally
+     * adding the same tab repeatedly.
+     */
+
+    setNewTabYear("");
+    setNewTabBatch("");
+    setNewTabSemester("");
+  };
+
+
+  /*
+   * =======================================================
+   * CLOSE TAB
+   * =======================================================
+   */
+
+  const closeTab = (
+    idToClose
+  ) => {
+
+    if (openTabs.length <= 1) {
+
+      setError(
+        "At least one academic schedule must remain open."
+      );
+
+      return;
+    }
+
+
+    const nextTabs =
+      openTabs.filter(
+        (tab) =>
+          tab.id !==
+          idToClose
+      );
+
+
+    setOpenTabs(
+      nextTabs
+    );
+
+
+    setRowsByTab(
+      (previous) => {
+
+        const updated = {
+          ...previous,
+        };
+
+        delete updated[
+          idToClose
+        ];
+
+        return updated;
+      }
+    );
+
+
+    if (
+      activeOpenTabId ===
+      idToClose
+    ) {
+
+      setActiveOpenTabId(
+        nextTabs[0]?.id ||
+        null
+      );
+    }
+
     setError("");
   };
 
+
+  /*
+   * =======================================================
+   * LOAD PRESET
+   *
+   * Disabled intentionally because you requested
+   * no automatic/pre-filled courses.
+   * =======================================================
+   */
+
+  const handleLoadPreset = () => {
+
+    setError(
+      "Preset loading is disabled. Add courses manually to each academic schedule."
+    );
+  };
+
+
+  /*
+   * =======================================================
+   * RESET
+   *
+   * Clears courses only.
+   * Does NOT create courses.
+   * =======================================================
+   */
+
   const handleReset = () => {
-    const defaultRows = [];
-    ALL_IT_BATCHES.forEach((b) => {
-      defaultRows.push(createEmptyRow(b.year, b.batch));
-    });
-    setRows(defaultRows);
+
+    const emptyRows = {};
+
+    openTabs.forEach(
+      (tab) => {
+
+        emptyRows[
+          tab.id
+        ] = [];
+
+      }
+    );
+
+    setRowsByTab(
+      emptyRows
+    );
+
     setResult(null);
     setError("");
   };
+
+
+  /*
+   * =======================================================
+   * PRINT
+   * =======================================================
+   */
 
   const handlePrint = () => {
     window.print();
   };
 
-  // Generate timetable via backend solver service
+
+  /*
+   * =======================================================
+   * GENERATE TIMETABLE
+   * =======================================================
+   */
+
   const generate = async () => {
-    // Client-side checks & validations
-    if (rows.length === 0) {
-      setError("Please add at least one subject to generate a timetable.");
+
+    /*
+     * Collect ONLY actual courses.
+     */
+
+    const allRows =
+      Object.values(
+        rowsByTab
+      )
+        .flat()
+        .filter(
+          (row) =>
+            row.name?.trim() ||
+            row.sub_code?.trim()
+        );
+
+
+    /*
+     * No courses.
+     */
+
+    if (
+      allRows.length === 0
+    ) {
+
+      setError(
+        "Please add at least one course before generating the timetable."
+      );
+
       return;
     }
 
-    const invalidRow = rows.find(
-      (r) => !r.name.trim() || !r.staff || !r.theory_hours || Number(r.theory_hours) <= 0
-    );
+
+    /*
+     * Validate every course.
+     */
+
+    const invalidRow =
+      allRows.find(
+        (row) => {
+
+          const name =
+            row.name?.trim();
+
+          const staff =
+            row.staff?.trim();
+
+          const theoryHours =
+            Number(
+              row.theory_hours
+            );
+
+          return (
+            !name ||
+            !staff ||
+            !row.theory_hours ||
+            theoryHours <= 0
+          );
+        }
+      );
+
+
     if (invalidRow) {
+
       setError(
-        "Every subject requires a valid name, assigned staff, and at least 1 lecture hour."
+        `Please complete the course "${
+          invalidRow.name?.trim() ||
+          invalidRow.sub_code ||
+          "Unnamed Course"
+        }". Every course requires a name, faculty, and at least 1 lecture hour.`
       );
+
       return;
     }
 
-    const invalidLab = rows.find(
-      (r) =>
-        r.has_lab &&
-        (!r.lab_hours || Number(r.lab_hours) <= 0 || Number(r.lab_hours) % 2 !== 0)
-    );
-    if (invalidLab) {
-      setError(
-        `Subject "${invalidLab.name}" has practical enabled, but lab (P) hours must be a positive multiple of 2 (e.g. 2, 4).`
+
+    /*
+     * Validate labs.
+     */
+
+    const invalidLab =
+      allRows.find(
+        (row) =>
+          row.has_lab &&
+          (
+            !row.lab_hours ||
+            Number(row.lab_hours) <= 0 ||
+            Number(row.lab_hours) % 2 !== 0
+          )
       );
+
+
+    if (invalidLab) {
+
+      setError(
+        `Course "${invalidLab.name}" has practical enabled, but lab hours must be a positive multiple of 2.`
+      );
+
       return;
     }
+
+
+    /*
+     * Make sure every course belongs
+     * to an OPEN academic schedule.
+     */
+
+    const invalidSchedule =
+      allRows.find(
+        (row) =>
+          !openTabs.some(
+            (tab) =>
+              Number(tab.year) ===
+                Number(row.year) &&
+              tab.batch ===
+                row.batch &&
+              Number(tab.semester) ===
+                Number(row.semester)
+          )
+      );
+
+
+    if (invalidSchedule) {
+
+      setError(
+        `Course "${invalidSchedule.name}" is not associated with an open Year, Batch and Semester schedule.`
+      );
+
+      return;
+    }
+
 
     setLoading(true);
     setError("");
 
+
     try {
+
+      /*
+       * ===================================================
+       * IMPORTANT
+       *
+       * We create the backend batch list from the
+       * ACTUAL academic schedules being used.
+       *
+       * We do not send every possible batch blindly.
+       * ===================================================
+       */
+
+      const usedScheduleKeys =
+        new Set(
+          allRows.map(
+            (row) =>
+              createScheduleId(
+                Number(row.year),
+                row.batch,
+                Number(row.semester)
+              )
+          )
+        );
+
+
+      const scheduleDefinitions =
+        [...usedScheduleKeys]
+          .map(
+            (scheduleId) =>
+              openTabs.find(
+                (tab) =>
+                  tab.id ===
+                  scheduleId
+              )
+          )
+          .filter(Boolean);
+
+
+      /*
+       * Backend-compatible batch objects.
+       *
+       * The important information is still kept separately:
+       *
+       * year
+       * batch
+       * semester
+       *
+       * No regex is used.
+       */
+
+      const batches =
+        scheduleDefinitions.map(
+          (schedule) => ({
+            ...ALL_IT_BATCHES.find(
+              (item) =>
+                Number(item.year) ===
+                  Number(schedule.year) &&
+                item.batch ===
+                  schedule.batch
+            ),
+
+            year:
+              Number(schedule.year),
+
+            batch:
+              schedule.batch,
+
+            semester:
+              Number(schedule.semester),
+
+            schedule_id:
+              schedule.id,
+          })
+        );
+
+
+      /*
+       * Subjects.
+       *
+       * No fake values.
+       */
+
+      const subjects =
+        allRows.map(
+          (row) => ({
+
+            name:
+              row.name.trim(),
+
+            sub_code:
+              row.sub_code?.trim() ||
+              undefined,
+
+            credits:
+              row.credits !== ""
+                ? Number(
+                    row.credits
+                  )
+                : undefined,
+
+            year:
+              Number(row.year),
+
+            batch:
+              row.batch,
+
+            semester:
+              Number(row.semester),
+
+            schedule_id:
+              createScheduleId(
+                Number(row.year),
+                row.batch,
+                Number(row.semester)
+              ),
+
+            /*
+             * Keep batch_id compatible with
+             * the academic batch itself.
+             *
+             * Do NOT add semester to batch_id here.
+             * Semester is already a separate field.
+             */
+
+            batch_id:
+              ALL_IT_BATCHES.find(
+                (item) =>
+                  Number(item.year) ===
+                    Number(row.year) &&
+                  item.batch ===
+                    row.batch
+              )?.id ||
+              `IT_${Number(
+                row.year
+              )}_${row.batch}`,
+
+            department:
+              "IT",
+
+            staff:
+              row.staff.trim(),
+
+            theory_hours:
+              Number(
+                row.theory_hours
+              ),
+
+            has_lab:
+              Boolean(
+                row.has_lab
+              ),
+
+            lab_hours:
+              row.has_lab
+                ? Number(
+                    row.lab_hours
+                  )
+                : 0,
+
+            lab_type:
+              row.has_lab
+                ? row.lab_type ||
+                  null
+                : null,
+
+            subject_type:
+              row.subject_type ||
+              "regular",
+          })
+        );
+
+
       const payload = {
-        days: Number(days),
-        periods_per_day: Number(periods),
-        batches: ALL_IT_BATCHES,
-        labs: DEFAULT_LABS,
-        subjects: rows.map((r) => ({
-          name: r.name.trim(),
-          sub_code: r.sub_code || undefined,
-          credits: r.credits !== "" ? Number(r.credits) : undefined,
-          batch_id: r.batch_id || `IT_${r.year}_${r.batch}`,
-          year: Number(r.year),
-          batch: r.batch,
-          department: "IT",
-          staff: r.staff,
-          theory_hours: Number(r.theory_hours),
-          has_lab: Boolean(r.has_lab),
-          lab_hours: r.has_lab ? Number(r.lab_hours) : 0,
-          lab_type: r.has_lab ? r.lab_type || "AC" : null,
-          subject_type: r.subject_type || "regular",
-        })),
+
+        days: [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ].slice(0, Number(days)),
+
+        periods:
+          Number(periods),
+
+        batches,
+
+        labs:
+          DEFAULT_LABS,
+
+        subjects,
       };
 
-      const data = await generateTimetable(payload);
 
-      if (data.status === "OPTIMAL" || data.status === "FEASIBLE") {
-        setResult(data);
-        setActiveTab("TIMETABLE");
+      console.log(
+        "TIMETABLE PAYLOAD:",
+        payload
+      );
+
+
+      const data =
+        await generateTimetable(
+          payload
+        );
+
+
+      if (
+        data.success ||
+        data.status ===
+          "OPTIMAL" ||
+        data.status ===
+          "FEASIBLE"
+      ) {
+
+        setResult(
+          data
+        );
+
+        setActiveTab(
+          "TIMETABLE"
+        );
+
       } else {
+
         setError(
           data.message ||
-            "No feasible timetable found. Try adjusting period allocations or staff assignments."
+          "No feasible timetable found. Try adjusting period allocations or faculty assignments."
         );
+
       }
-    } catch (e) {
-      setError("An unexpected error occurred while communicating with the solver backend.");
+
+    } catch (generationError) {
+
+      console.error(
+        generationError
+      );
+
+      setError(
+        "An unexpected error occurred while communicating with the solver backend."
+      );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
-  return (
-    <div className="dashboard-app">
-      {/* Printable Output View */}
-      <PrintLayout result={result} days={days} periods={periods} />
 
-      {/* Screen Interactive View */}
+  /*
+   * =======================================================
+   * RENDER
+   * =======================================================
+   */
+
+  return (
+
+    <div className="dashboard-app">
+
+      <PrintLayout
+        result={result}
+        days={days}
+        periods={periods}
+      />
+
+
       <div className="screen-layout">
+
         <Header
-          onLoadPreset={handleLoadPreset}
-          onReset={handleReset}
-          onPrint={handlePrint}
-          hasResult={!!result}
+          onLoadPreset={
+            handleLoadPreset
+          }
+
+          onReset={
+            handleReset
+          }
+
+          onPrint={
+            handlePrint
+          }
+
+          hasResult={
+            !!result
+          }
         />
 
+
         <main className="dashboard-main-content">
-          {/* Global Year & Batch Controls */}
-          <div className="year-batch-toolbar" style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "16px", background: "var(--card-bg, #ffffff)", padding: "12px 20px", borderRadius: "10px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
-            <div className="selector-item" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <label htmlFor="year-select" style={{ fontWeight: 600, fontSize: "0.95rem" }}>Year:</label>
-              <select
-                id="year-select"
-                className="form-control"
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(Number(e.target.value))}
-                style={{ width: "130px" }}
+
+
+          {/* =================================================
+              ACADEMIC SCHEDULE TABS
+          ================================================= */}
+
+          <div className="batch-tab-toolbar">
+
+            <div className="batch-tabs-row">
+
+              {openTabs.map(
+                (tab) => (
+
+                  <div
+                    key={tab.id}
+                    className={`batch-tab-btn ${
+                      activeOpenTabId ===
+                      tab.id
+                        ? "active"
+                        : ""
+                    }`}
+
+                    onClick={() => {
+
+                      setActiveOpenTabId(
+                        tab.id
+                      );
+
+                      setActiveTab(
+                        "CONFIG"
+                      );
+
+                      setError("");
+
+                    }}
+
+                    role="button"
+                    tabIndex={0}
+
+                    onKeyDown={(event) => {
+
+                      if (
+                        event.key ===
+                          "Enter" ||
+                        event.key ===
+                          " "
+                      ) {
+
+                        setActiveOpenTabId(
+                          tab.id
+                        );
+
+                        setActiveTab(
+                          "CONFIG"
+                        );
+
+                      }
+
+                    }}
+                  >
+
+                    <span>
+                      {getOpenTabLabel(
+                        tab
+                      )}
+                    </span>
+
+
+                    <button
+                      type="button"
+                      className="batch-tab-close"
+                      onClick={(event) => {
+
+                        event.stopPropagation();
+
+                        closeTab(
+                          tab.id
+                        );
+
+                      }}
+
+                      aria-label={`Close ${getOpenTabLabel(
+                        tab
+                      )}`}
+                    >
+                      ×
+                    </button>
+
+                  </div>
+
+                )
+              )}
+
+
+              {/* =================================================
+                  NEW TAB BUTTON
+              ================================================= */}
+
+              <button
+                type="button"
+                className="batch-tab-add"
+                onClick={
+                  createNewTab
+                }
               >
-                {YEARS.map((y) => (
-                  <option key={y.value} value={y.value}>
-                    {y.label}
-                  </option>
-                ))}
-              </select>
+                + Add Schedule
+              </button>
+
             </div>
 
-            <div className="selector-item" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <label htmlFor="batch-select" style={{ fontWeight: 600, fontSize: "0.95rem" }}>Batch:</label>
-              <select
-                id="batch-select"
-                className="form-control"
-                value={selectedBatch}
-                onChange={(e) => setSelectedBatch(e.target.value)}
-                style={{ width: "130px" }}
-              >
-                {BATCH_OPTIONS.map((b) => (
-                  <option key={b.value} value={b.value}>
-                    {b.label}
+
+            {/* =================================================
+                NEW SCHEDULE SELECTORS
+            ================================================= */}
+
+            <div className="batch-tab-creator">
+
+
+              {/* YEAR */}
+
+              <div className="selector-item">
+
+                <label htmlFor="new-tab-year">
+                  Year
+                </label>
+
+                <select
+                  id="new-tab-year"
+                  className="form-control"
+                  value={
+                    newTabYear
+                  }
+
+                  onChange={
+                    handleNewTabYearChange
+                  }
+                >
+
+                  <option value="">
+                    Select Year
                   </option>
-                ))}
-              </select>
+
+                  {YEARS.map(
+                    (year) => (
+
+                      <option
+                        key={
+                          year.value
+                        }
+                        value={
+                          year.value
+                        }
+                      >
+                        {year.label}
+                      </option>
+
+                    )
+                  )}
+
+                </select>
+
+              </div>
+
+
+              {/* BATCH */}
+
+              <div className="selector-item">
+
+                <label htmlFor="new-tab-batch">
+                  Batch
+                </label>
+
+                <select
+                  id="new-tab-batch"
+                  className="form-control"
+                  value={
+                    newTabBatch
+                  }
+
+                  onChange={
+                    handleNewTabBatchChange
+                  }
+
+                  disabled={
+                    !newTabYear
+                  }
+                >
+
+                  <option value="">
+                    Select Batch
+                  </option>
+
+                  {availableBatchesForYear.map(
+                    (batch) => (
+
+                      <option
+                        key={
+                          batch.value
+                        }
+                        value={
+                          batch.value
+                        }
+                      >
+                        {batch.label}
+                      </option>
+
+                    )
+                  )}
+
+                </select>
+
+              </div>
+
+
+              {/* SEMESTER */}
+
+              <div className="selector-item">
+
+                <label htmlFor="new-tab-semester">
+                  Semester
+                </label>
+
+                <select
+                  id="new-tab-semester"
+                  className="form-control"
+                  value={
+                    newTabSemester
+                  }
+
+                  onChange={
+                    handleNewTabSemesterChange
+                  }
+
+                  disabled={
+                    !newTabYear
+                  }
+                >
+
+                  <option value="">
+                    Select Semester
+                  </option>
+
+                  {availableSemesters.map(
+                    (semester) => (
+
+                      <option
+                        key={
+                          semester.value
+                        }
+                        value={
+                          semester.value
+                        }
+                      >
+                        {semester.label}
+                      </option>
+
+                    )
+                  )}
+
+                </select>
+
+              </div>
+
             </div>
 
-            <div style={{ marginLeft: "auto", fontSize: "0.85rem", color: "#666" }}>
-              Active Department: <strong>Information Technology (IT)</strong> | Selected: <strong>{YEARS.find(y => y.value === selectedYear)?.label} - {selectedBatch}</strong>
-            </div>
           </div>
 
-          {/* Main Navigation Tabs */}
+
+          {/* =================================================
+              MAIN NAVIGATION
+          ================================================= */}
+
           <div className="app-subnav">
+
             <button
-              className={`subnav-btn ${activeTab === "CONFIG" ? "active" : ""}`}
-              onClick={() => setActiveTab("CONFIG")}
+              type="button"
+              className={`subnav-btn ${
+                activeTab ===
+                "CONFIG"
+                  ? "active"
+                  : ""
+              }`}
+
+              onClick={() =>
+                setActiveTab(
+                  "CONFIG"
+                )
+              }
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 20h9" />
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-              </svg>
+              ✎
               1. Subject & Faculty Setup
             </button>
 
-            <button
-              className={`subnav-btn ${activeTab === "TIMETABLE" ? "active" : ""} ${!result ? "disabled" : ""}`}
-              onClick={() => result && setActiveTab("TIMETABLE")}
-              disabled={!result}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              2. Generated Timetable
-              {result && <span className="subnav-badge">Ready</span>}
-            </button>
 
             <button
-              className={`subnav-btn ${activeTab === "FACULTY" ? "active" : ""} ${!result ? "disabled" : ""}`}
-              onClick={() => result && setActiveTab("FACULTY")}
+              type="button"
+              className={`subnav-btn ${
+                activeTab ===
+                "TIMETABLE"
+                  ? "active"
+                  : ""
+              } ${
+                !result
+                  ? "disabled"
+                  : ""
+              }`}
+
+              onClick={() =>
+                result &&
+                setActiveTab(
+                  "TIMETABLE"
+                )
+              }
+
               disabled={!result}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
+              📅
+              2. Generated Timetable
+
+              {result && (
+                <span className="subnav-badge">
+                  Ready
+                </span>
+              )}
+            </button>
+
+
+            <button
+              type="button"
+              className={`subnav-btn ${
+                activeTab ===
+                "FACULTY"
+                  ? "active"
+                  : ""
+              } ${
+                !result
+                  ? "disabled"
+                  : ""
+              }`}
+
+              onClick={() =>
+                result &&
+                setActiveTab(
+                  "FACULTY"
+                )
+              }
+
+              disabled={!result}
+            >
+              👥
               3. Faculty Workload Matrix
             </button>
+
           </div>
 
-          {/* Alert Banner */}
+
+          {/* =================================================
+              ERROR
+          ================================================= */}
+
           {error && (
+
             <div className="alert-banner alert-banner-error">
-              <span className="alert-icon">⚠️</span>
+
+              <span className="alert-icon">
+                ⚠️
+              </span>
+
               <div className="alert-content">
-                <strong>Schedule Generation Error</strong>
-                <p>{error}</p>
+
+                <strong>
+                  Schedule Generation Error
+                </strong>
+
+                <p>
+                  {error}
+                </p>
+
               </div>
-              <button className="alert-close" onClick={() => setError("")}>✕</button>
+
+              <button
+                type="button"
+                className="alert-close"
+                onClick={() =>
+                  setError("")
+                }
+              >
+                ✕
+              </button>
+
             </div>
+
           )}
 
-          {result && activeTab === "CONFIG" && (
+
+          {/* =================================================
+              SUCCESS
+          ================================================= */}
+
+          {result &&
+            activeTab ===
+              "CONFIG" && (
+
             <div className="alert-banner alert-banner-success">
-              <span className="alert-icon">✓</span>
+
+              <span className="alert-icon">
+                ✓
+              </span>
+
               <div className="alert-content">
-                <strong>Timetable Successfully Generated!</strong>
-                <p>Status: {result.status}. Switch to the "Generated Timetable" or "Faculty Workload Matrix" tab to view schedules.</p>
+
+                <strong>
+                  Timetable Successfully Generated!
+                </strong>
+
+                <p>
+                  Status:{" "}
+                  {result.status}.
+                  Switch to the Generated
+                  Timetable or Faculty Workload
+                  Matrix to view the result.
+                </p>
+
               </div>
+
             </div>
+
           )}
 
-          {/* TAB 1: CONFIGURATION */}
-          {activeTab === "CONFIG" && (
+
+          {/* =================================================
+              CONFIGURATION
+          ================================================= */}
+
+          {activeTab ===
+            "CONFIG" && (
+
             <div className="tab-content fade-in">
+
               <MetaSettings
                 days={days}
                 setDays={setDays}
                 periods={periods}
-                setPeriods={setPeriods}
+                setPeriods={
+                  setPeriods
+                }
                 loading={loading}
-                onGenerate={generate}
+                onGenerate={
+                  generate
+                }
               />
+
 
               <div className="batches-grid">
-                <SubjectConfigTable
-                  year={selectedYear}
-                  batch={selectedBatch}
-                  batchId={`IT_${selectedYear}_${selectedBatch}`}
-                  rows={rows}
-                  updateRow={updateRow}
-                  removeRow={removeRow}
-                  addRow={addRow}
-                  days={days}
-                  periods={periods}
-                />
+
+                {activeConfigTab ? (
+
+                  <SubjectConfigTable
+
+                    year={
+                      currentYear
+                    }
+
+                    batch={
+                      currentBatch
+                    }
+
+                    semester={
+                      currentSemester
+                    }
+
+                    batchId={
+                      activeConfigTab.id
+                    }
+
+                    rows={
+                      rows
+                    }
+
+                    updateRow={
+                      updateRow
+                    }
+
+                    removeRow={
+                      removeRow
+                    }
+
+                    addRow={
+                      addRow
+                    }
+
+                    days={
+                      days
+                    }
+
+                    periods={
+                      periods
+                    }
+
+                  />
+
+                ) : (
+
+                  <div className="empty-table-msg">
+
+                    No academic schedule selected.
+
+                    <br />
+
+                    Choose Year, Batch and Semester
+                    above and click
+                    <strong>
+                      {" "}Add Schedule
+                    </strong>.
+
+                  </div>
+
+                )}
+
               </div>
+
 
               <div className="bottom-generate-bar">
+
                 <button
+                  type="button"
                   className="btn btn-primary btn-lg"
-                  disabled={loading}
-                  onClick={generate}
+
+                  disabled={
+                    loading ||
+                    openTabs.length === 0
+                  }
+
+                  onClick={
+                    generate
+                  }
                 >
-                  {loading ? "Solving Constraints…" : "Generate Department Timetable"}
+
+                  {loading
+                    ? "Solving Constraints…"
+                    : "Generate Department Timetable"}
+
                 </button>
+
               </div>
+
             </div>
+
           )}
 
-          {/* TAB 2: TIMETABLE GRID */}
-          {activeTab === "TIMETABLE" && (
+
+          {/* =================================================
+              TIMETABLE
+          ================================================= */}
+
+          {activeTab ===
+            "TIMETABLE" && (
+
             <div className="tab-content fade-in">
+
               <TimetableGrid
-                result={result}
-                selectedYear={selectedYear}
-                selectedBatch={selectedBatch}
-                periods={periods}
+                result={
+                  result
+                }
+
+                periods={
+                  periods
+                }
               />
+
             </div>
+
           )}
 
-          {/* TAB 3: FACULTY WORKLOAD MATRIX */}
-          {activeTab === "FACULTY" && (
+
+          {/* =================================================
+              FACULTY
+          ================================================= */}
+
+          {activeTab ===
+            "FACULTY" && (
+
             <div className="tab-content fade-in">
+
               <FacultyWorkloadView
-                result={result}
-                days={days}
-                periods={periods}
+                result={
+                  result
+                }
+
+                days={
+                  days
+                }
+
+                periods={
+                  periods
+                }
               />
+
             </div>
+
           )}
+
         </main>
+
       </div>
+
     </div>
   );
 }

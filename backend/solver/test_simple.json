@@ -1,0 +1,74 @@
+{
+  "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "periods": 8,
+  "solver_timeout": 60,
+  "solver_workers": 4,
+
+  "batches": [
+    { "id": "Y1_B1" },
+    { "id": "Y1_B2" },
+    { "id": "Y1_B3" },
+    { "id": "Y2_B1" },
+    { "id": "Y2_B2" },
+    { "id": "Y2_B3" },
+    { "id": "Y3_B1" },
+    { "id": "Y3_B2" },
+    { "id": "Y3_B3" }
+  ],
+
+  "subjects": [
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Programming in C", "staff": "Dr. Priya", "batch_id": "Y1_B1", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Programming in C", "staff": "Dr. Priya", "batch_id": "Y1_B2", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Programming in C", "staff": "Dr. Priya", "batch_id": "Y1_B3", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Digital Logic", "staff": "Dr. Karthik", "batch_id": "Y2_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_B1", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Digital Logic", "staff": "Dr. Karthik", "batch_id": "Y2_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_B2", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Digital Logic", "staff": "Dr. Karthik", "batch_id": "Y2_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_B3", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Computer Networks", "staff": "Dr. Deepa", "batch_id": "Y3_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Compiler Design", "staff": "Dr. Ramesh", "batch_id": "Y3_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Software Engineering", "staff": "Prof. Geetha", "batch_id": "Y3_B1", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "AI Fundamentals", "staff": "Dr. Lakshmi", "batch_id": "Y3_B1", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Computer Networks", "staff": "Dr. Deepa", "batch_id": "Y3_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Compiler Design", "staff": "Dr. Ramesh", "batch_id": "Y3_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Software Engineering", "staff": "Prof. Geetha", "batch_id": "Y3_B2", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "AI Fundamentals", "staff": "Dr. Lakshmi", "batch_id": "Y3_B2", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "Computer Networks", "staff": "Dr. Deepa", "batch_id": "Y3_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Compiler Design", "staff": "Dr. Ramesh", "batch_id": "Y3_B3", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Software Engineering", "staff": "Prof. Geetha", "batch_id": "Y3_B3", "theory_hours": 4, "lab_hours": 0 },
+    { "name": "AI Fundamentals", "staff": "Dr. Lakshmi", "batch_id": "Y3_B3", "theory_hours": 3, "lab_hours": 0 }
+  ]
+}

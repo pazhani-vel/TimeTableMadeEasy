@@ -30,23 +30,44 @@ export const YEARS = [
 ];
 
 export const BATCH_OPTIONS = [
-  { value: "B1", label: "Batch B1" },
-  { value: "B2", label: "Batch B2" }
+  { value: "B1", label: "IT Batch B1" },
+  { value: "B2", label: "IT Batch B2" },
+  { value: "AIDS_B1", label: "AIDS Batch B1" }
+];
+
+export const YEAR_TO_SEMESTERS = {
+  2: [3, 4],
+  3: [5, 6],
+  4: [7, 8],
+};
+
+export const SEMESTER_OPTIONS = [
+  { value: 3, label: "Semester 3" },
+  { value: 4, label: "Semester 4" },
+  { value: 5, label: "Semester 5" },
+  { value: 6, label: "Semester 6" },
+  { value: 7, label: "Semester 7" },
+  { value: 8, label: "Semester 8" },
 ];
 
 export const ALL_IT_BATCHES = [
-  { id: "IT_2_B1", department: "IT", year: 2, batch: "B1", label: "2nd Year - Batch B1" },
-  { id: "IT_2_B2", department: "IT", year: 2, batch: "B2", label: "2nd Year - Batch B2" },
-  { id: "IT_3_B1", department: "IT", year: 3, batch: "B1", label: "3rd Year - Batch B1" },
-  { id: "IT_3_B2", department: "IT", year: 3, batch: "B2", label: "3rd Year - Batch B2" },
-  { id: "IT_4_B1", department: "IT", year: 4, batch: "B1", label: "4th Year - Batch B1" },
-  { id: "IT_4_B2", department: "IT", year: 4, batch: "B2", label: "4th Year - Batch B2" }
+  { id: "IT_2_B1", department: "IT", year: 2, batch: "B1", label: "2nd Year - IT Batch B1" },
+  { id: "IT_2_B2", department: "IT", year: 2, batch: "B2", label: "2nd Year - IT Batch B2" },
+  { id: "AIDS_2_B1", department: "AIDS", year: 2, batch: "AIDS_B1", label: "2nd Year - AIDS Batch B1" },
+  { id: "IT_3_B1", department: "IT", year: 3, batch: "B1", label: "3rd Year - IT Batch B1" },
+  { id: "IT_3_B2", department: "IT", year: 3, batch: "B2", label: "3rd Year - IT Batch B2" },
+  { id: "AIDS_3_B1", department: "AIDS", year: 3, batch: "AIDS_B1", label: "3rd Year - AIDS Batch B1" },
+  { id: "IT_4_B1", department: "IT", year: 4, batch: "B1", label: "4th Year - IT Batch B1" },
+  { id: "IT_4_B2", department: "IT", year: 4, batch: "B2", label: "4th Year - IT Batch B2" },
+  { id: "AIDS_4_B1", department: "AIDS", year: 4, batch: "AIDS_B1", label: "4th Year - AIDS Batch B1" }
 ];
 
 export const DEFAULT_LABS = [
-  { id: "LAB_1", department: "IT", type: "AC", capacity: 1 },
-  { id: "LAB_2", department: "IT", type: "AC", capacity: 1 },
-  { id: "LAB_3", department: "IT", type: "NON_AC", capacity: 1 }
+  { id: "IT_LAB1", name: "IT Lab 1", department: "IT", type: "AC", capacity: 1 },
+  { id: "IT_LAB2", name: "IT Lab 2", department: "IT", type: "AC", capacity: 1 },
+  { id: "IT_LAB3", name: "IT Lab 3", department: "IT", type: "NON_AC", capacity: 1 },
+  { id: "AIDS_LAB1", name: "AIDS Lab 1", department: "AIDS", type: "AC", capacity: 1 },
+  { id: "AIDS_LAB2", name: "AIDS Lab 2", department: "AIDS", type: "AC", capacity: 1 }
 ];
 
 export const PERIOD_TIME_SLOTS = [

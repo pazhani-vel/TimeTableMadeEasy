@@ -1,5 +1,5 @@
 import React from "react";
-import { PERIOD_TIME_SLOTS, YEARS } from "../constants/academicData";
+import { PERIOD_TIME_SLOTS } from "../constants/academicData";
 
 export default function PrintLayout({ result, days, periods }) {
   if (!result || !result.timetable) return null;
@@ -32,20 +32,8 @@ export default function PrintLayout({ result, days, periods }) {
     day: "numeric",
   });
 
-  const getBatchLabel = (batchId) => {
-    const parts = batchId.split("_");
-    if (parts.length === 3) {
-      const yrVal = parts[1];
-      const batchVal = parts[2];
-      const yearLabel = YEARS.find((y) => y.value === Number(yrVal))?.label || `${yrVal}th Year`;
-      return `${yearLabel} - Batch ${batchVal}`;
-    }
-    return `BATCH ${batchId}`;
-  };
-
   return (
     <div className="print-only-layout">
-      {/* Official Header */}
       <div className="print-header">
         <div className="print-header-top">COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
         <div className="print-header-dept">DEPARTMENT OF INFORMATION TECHNOLOGY</div>
@@ -57,10 +45,9 @@ export default function PrintLayout({ result, days, periods }) {
         </div>
       </div>
 
-      {/* Batch Tables */}
-      {Object.entries(result.timetable).map(([batchId, grid]) => (
-        <div className="print-batch-block" key={batchId}>
-          <h3 className="print-batch-heading">{getBatchLabel(batchId).toUpperCase()} ({batchId})</h3>
+      {Object.entries(result.timetable).map(([batchName, grid]) => (
+        <div className="print-batch-block" key={batchName}>
+          <h3 className="print-batch-heading">{batchName}</h3>
           <table className="print-table">
             <thead>
               <tr>
@@ -82,7 +69,7 @@ export default function PrintLayout({ result, days, periods }) {
                       return <td key={colIdx} className="print-td-lunch">LUNCH</td>;
                     }
                     const cell = dayRow[c.index];
-                    if (!cell) {
+                    if (!cell || cell.type === "free") {
                       return <td key={colIdx} className="print-td-empty">—</td>;
                     }
                     return (
@@ -90,7 +77,7 @@ export default function PrintLayout({ result, days, periods }) {
                         <div className="print-subj">{cell.subject}</div>
                         {cell.staff && <div className="print-staff">{cell.staff}</div>}
                         <div className="print-type">
-                          [{cell.type === "theory" ? "L" : cell.type === "lab" ? `P (${cell.lab || "Lab"})` : "Lib"}]
+                          [{cell.type === "theory" ? "L" : cell.type === "lab" ? "P" : cell.type === "special" ? cell.subject : "—"}]
                         </div>
                       </td>
                     );
@@ -102,7 +89,6 @@ export default function PrintLayout({ result, days, periods }) {
         </div>
       ))}
 
-      {/* Official Signature Footer */}
       <div className="print-signature-section">
         <div className="sig-box">
           <div className="sig-line"></div>

@@ -1,0 +1,441 @@
+{
+  "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "periods_per_day": 8,
+  "solver_timeout": 120,
+  "solver_workers": 8,
+
+  "batches": [
+    { "id": "IT_2_B1", "year": 2, "department": "IT", "batch": "B1" },
+    { "id": "IT_2_B2", "year": 2, "department": "IT", "batch": "B2" },
+    { "id": "AIDS_2_B1", "year": 2, "department": "AIDS", "batch": "B1" },
+    { "id": "IT_3_B1", "year": 3, "department": "IT", "batch": "B1" },
+    { "id": "IT_3_B2", "year": 3, "department": "IT", "batch": "B2" },
+    { "id": "AIDS_3_B1", "year": 3, "department": "AIDS", "batch": "B1" },
+    { "id": "IT_4_B1", "year": 4, "department": "IT", "batch": "B1" },
+    { "id": "IT_4_B2", "year": 4, "department": "IT", "batch": "B2" },
+    { "id": "AIDS_4_B1", "year": 4, "department": "AIDS", "batch": "B1" }
+  ],
+
+  "labs": [
+    { "id": "LAB_1", "department": "IT", "type": "AC", "capacity": 1 },
+    { "id": "LAB_2", "department": "IT", "type": "AC", "capacity": 1 },
+    { "id": "LAB_3", "department": "IT", "type": "NON_AC", "capacity": 1 },
+    { "id": "LAB_4", "department": "AIDS", "type": "AC", "capacity": 1 }
+  ],
+
+  "subjects": [
+    {
+      "name": "Data Structures",
+      "sub_code": "IT23302",
+      "staff": "Dr. Radha Senthilkumar",
+      "batch_id": "IT_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Object Oriented Programming",
+      "sub_code": "IT23304",
+      "staff": "Dr. P. AnandhaKumar",
+      "batch_id": "IT_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Digital Logic and Design",
+      "sub_code": "IT23301",
+      "staff": "M. Hemalatha",
+      "batch_id": "IT_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Database Management Systems",
+      "sub_code": "IT23303",
+      "staff": "Dr. R. Geetha Ramani",
+      "batch_id": "IT_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Discrete Mathematics",
+      "sub_code": "MA23301",
+      "staff": "Dr. P. Kola Sujatha",
+      "batch_id": "IT_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Data Structures",
+      "sub_code": "IT23302",
+      "staff": "Dr. S. Umamaheswari",
+      "batch_id": "IT_2_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Object Oriented Programming",
+      "sub_code": "IT23304",
+      "staff": "Dr. G. Rajesh",
+      "batch_id": "IT_2_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Digital Logic and Design",
+      "sub_code": "IT23301",
+      "staff": "Dr. J. Dhalia Sweetlin",
+      "batch_id": "IT_2_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Database Management Systems",
+      "sub_code": "IT23303",
+      "staff": "Dr. Dhananjay Kumar",
+      "batch_id": "IT_2_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Discrete Mathematics",
+      "sub_code": "MA23301",
+      "staff": "Dr. B. Lydia Elizabeth",
+      "batch_id": "IT_2_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Machine Learning Fundamentals",
+      "sub_code": "AIDS2301",
+      "staff": "S.K. Lavanya",
+      "batch_id": "AIDS_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Python Programming",
+      "sub_code": "AIDS2302",
+      "staff": "C. Sunil Retmin Raj",
+      "batch_id": "AIDS_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Linear Algebra for AI",
+      "sub_code": "AIDS2303",
+      "staff": "E. Pugazhendi",
+      "batch_id": "AIDS_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Statistics for Data Science",
+      "sub_code": "AIDS2304",
+      "staff": "Dr. D. Vivekanandan",
+      "batch_id": "AIDS_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Introduction to AI",
+      "sub_code": "AIDS2305",
+      "staff": "P. Seethalakshmi",
+      "batch_id": "AIDS_2_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Computer Networks",
+      "sub_code": "IT23501",
+      "staff": "Dr. Dhananjay Kumar",
+      "batch_id": "IT_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Web Programming",
+      "sub_code": "IT23502",
+      "staff": "S.K. Lavanya",
+      "batch_id": "IT_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "NON_AC"
+    },
+    {
+      "name": "Compiler Design",
+      "sub_code": "IT23503",
+      "staff": "E. Pugazhendi",
+      "batch_id": "IT_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Machine Learning",
+      "sub_code": "IT23504",
+      "staff": "Dr. J. Dhalia Sweetlin",
+      "batch_id": "IT_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Operating Systems",
+      "sub_code": "IT23505",
+      "staff": "Dr. G. Rajesh",
+      "batch_id": "IT_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Computer Networks",
+      "sub_code": "IT23501",
+      "staff": "Dr. Radha Senthilkumar",
+      "batch_id": "IT_3_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Web Programming",
+      "sub_code": "IT23502",
+      "staff": "Dr. P. AnandhaKumar",
+      "batch_id": "IT_3_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "NON_AC"
+    },
+    {
+      "name": "Compiler Design",
+      "sub_code": "IT23503",
+      "staff": "M. Hemalatha",
+      "batch_id": "IT_3_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Machine Learning",
+      "sub_code": "IT23504",
+      "staff": "Dr. R. Geetha Ramani",
+      "batch_id": "IT_3_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Operating Systems",
+      "sub_code": "IT23505",
+      "staff": "Dr. S. Umamaheswari",
+      "batch_id": "IT_3_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Deep Learning",
+      "sub_code": "AIDS3301",
+      "staff": "Dr. D. Vivekanandan",
+      "batch_id": "AIDS_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Natural Language Processing",
+      "sub_code": "AIDS3302",
+      "staff": "P. Seethalakshmi",
+      "batch_id": "AIDS_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Computer Vision",
+      "sub_code": "AIDS3303",
+      "staff": "Kannan sir",
+      "batch_id": "AIDS_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Data Mining",
+      "sub_code": "AIDS3304",
+      "staff": "CN Mam",
+      "batch_id": "AIDS_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Big Data Analytics",
+      "sub_code": "AIDS3305",
+      "staff": "Prathiba",
+      "batch_id": "AIDS_3_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+
+    {
+      "name": "Cryptography and Network Security",
+      "sub_code": "IT23701",
+      "staff": "Dr. M.R. Sumalatha",
+      "batch_id": "IT_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Software Engineering",
+      "sub_code": "IT23702",
+      "staff": "Dr. B. Lydia Elizabeth",
+      "batch_id": "IT_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Cloud Computing",
+      "sub_code": "IT23703",
+      "staff": "Dr. D. Vivekanandan",
+      "batch_id": "IT_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "NON_AC"
+    },
+    {
+      "name": "Internet of Things",
+      "sub_code": "IT23704",
+      "staff": "Durga Devi",
+      "batch_id": "IT_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Project Work",
+      "sub_code": "IT23705",
+      "staff": "Industry Person",
+      "batch_id": "IT_4_B1",
+      "theory_hours": 0,
+      "lab_hours": 4,
+      "lab_type": "NON_AC"
+    },
+
+    {
+      "name": "Cryptography and Network Security",
+      "sub_code": "IT23701",
+      "staff": "Dr. P. Kola Sujatha",
+      "batch_id": "IT_4_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Software Engineering",
+      "sub_code": "IT23702",
+      "staff": "Dr. P. AnandhaKumar",
+      "batch_id": "IT_4_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Cloud Computing",
+      "sub_code": "IT23703",
+      "staff": "Dr. G. Rajesh",
+      "batch_id": "IT_4_B2",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "NON_AC"
+    },
+    {
+      "name": "Internet of Things",
+      "sub_code": "IT23704",
+      "staff": "Guest Faculty",
+      "batch_id": "IT_4_B2",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Project Work",
+      "sub_code": "IT23705",
+      "staff": "Industry Person",
+      "batch_id": "IT_4_B2",
+      "theory_hours": 0,
+      "lab_hours": 4,
+      "lab_type": "NON_AC"
+    },
+
+    {
+      "name": "Reinforcement Learning",
+      "sub_code": "AIDS4301",
+      "staff": "S.K. Lavanya",
+      "batch_id": "AIDS_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "Generative AI",
+      "sub_code": "AIDS4302",
+      "staff": "C. Sunil Retmin Raj",
+      "batch_id": "AIDS_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 2,
+      "lab_type": "AC"
+    },
+    {
+      "name": "MLOps",
+      "sub_code": "AIDS4303",
+      "staff": "E. Pugazhendi",
+      "batch_id": "AIDS_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Ethical AI",
+      "sub_code": "AIDS4304",
+      "staff": "Dr. D. Vivekanandan",
+      "batch_id": "AIDS_4_B1",
+      "theory_hours": 3,
+      "lab_hours": 0,
+      "lab_type": null
+    },
+    {
+      "name": "Capstone Project",
+      "sub_code": "AIDS4305",
+      "staff": "P. Seethalakshmi",
+      "batch_id": "AIDS_4_B1",
+      "theory_hours": 0,
+      "lab_hours": 4,
+      "lab_type": "NON_AC"
+    }
+  ]
+}

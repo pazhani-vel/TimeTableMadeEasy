@@ -1,0 +1,83 @@
+{
+  "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "periods": 8,
+  "solver_timeout": 120,
+  "solver_workers": 8,
+
+  "batches": [
+    { "id": "Y1_IT_B1", "name": "Year 1 - IT B1" },
+    { "id": "Y1_IT_B2", "name": "Year 1 - IT B2" },
+    { "id": "Y1_AIDS_B1", "name": "Year 1 - AIDS B1" },
+    { "id": "Y2_IT_B1", "name": "Year 2 - IT B1" },
+    { "id": "Y2_IT_B2", "name": "Year 2 - IT B2" },
+    { "id": "Y2_AIDS_B1", "name": "Year 2 - AIDS B1" },
+    { "id": "Y3_IT_B1", "name": "Year 3 - IT B1" },
+    { "id": "Y3_IT_B2", "name": "Year 3 - IT B2" },
+    { "id": "Y3_AIDS_B1", "name": "Year 3 - AIDS B1" }
+  ],
+
+  "labs": [
+    { "id": "IT_LAB1", "name": "IT Lab 1", "department": "IT", "type": "AC", "capacity": 1 },
+    { "id": "IT_LAB2", "name": "IT Lab 2", "department": "IT", "type": "AC", "capacity": 1 },
+    { "id": "IT_LAB3", "name": "IT Lab 3", "department": "IT", "type": "NON_AC", "capacity": 1 },
+    { "id": "AIDS_LAB1", "name": "AIDS Lab 1", "department": "AIDS", "type": "AC", "capacity": 1 },
+    { "id": "AIDS_LAB2", "name": "AIDS Lab 2", "department": "AIDS", "type": "AC", "capacity": 1 }
+  ],
+
+  "subjects": [
+
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "NON_AC" },
+    { "name": "Programming in C", "staff": "Dr. Priya", "batch_id": "Y1_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "NON_AC" },
+    { "name": "Programming in C", "staff": "Dr. Priya", "batch_id": "Y1_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+
+    { "name": "Applied Mathematics I", "staff": "Dr. Kumar", "batch_id": "Y1_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Engineering Physics", "staff": "Dr. Sharma", "batch_id": "Y1_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "English Communication", "staff": "Prof. Meena", "batch_id": "Y1_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Basic Electronics", "staff": "Dr. Rajan", "batch_id": "Y1_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Programming in Python", "staff": "Dr. Lakshmi", "batch_id": "Y1_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Digital Logic Design", "staff": "Dr. Karthik", "batch_id": "Y2_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "NON_AC" },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Digital Logic Design", "staff": "Dr. Karthik", "batch_id": "Y2_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "NON_AC" },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Data Structures", "staff": "Dr. Anita", "batch_id": "Y2_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Discrete Mathematics", "staff": "Dr. Mohan", "batch_id": "Y2_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Machine Learning Basics", "staff": "Dr. Venkat", "batch_id": "Y2_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "OOP with Java", "staff": "Dr. Suresh", "batch_id": "Y2_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "DBMS", "staff": "Dr. Revathi", "batch_id": "Y2_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Computer Networks", "staff": "Dr. Deepa", "batch_id": "Y3_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Compiler Design", "staff": "Dr. Ramesh", "batch_id": "Y3_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Software Engineering", "staff": "Prof. Geetha", "batch_id": "Y3_IT_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Web Programming", "staff": "Dr. Priya", "batch_id": "Y3_IT_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Computer Networks", "staff": "Dr. Deepa", "batch_id": "Y3_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Compiler Design", "staff": "Dr. Ramesh", "batch_id": "Y3_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Software Engineering", "staff": "Prof. Geetha", "batch_id": "Y3_IT_B2", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Web Programming", "staff": "Dr. Priya", "batch_id": "Y3_IT_B2", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+
+    { "name": "Operating Systems", "staff": "Dr. Venkat", "batch_id": "Y3_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Deep Learning", "staff": "Dr. Lakshmi", "batch_id": "Y3_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Natural Language Processing", "staff": "Dr. Deepa", "batch_id": "Y3_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" },
+    { "name": "Big Data Analytics", "staff": "Dr. Ramesh", "batch_id": "Y3_AIDS_B1", "theory_hours": 3, "lab_hours": 0 },
+    { "name": "Data Mining", "staff": "Dr. Mohan", "batch_id": "Y3_AIDS_B1", "theory_hours": 3, "lab_hours": 2, "lab_type": "AC" }
+  ]
+}
