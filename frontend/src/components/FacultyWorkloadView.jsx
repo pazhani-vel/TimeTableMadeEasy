@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 export default function FacultyWorkloadView({ result, days, periods }) {
-  if (!result || !result.timetable) return null;
-
   const [selectedStaff, setSelectedStaff] = useState("ALL");
+
+  if (!result || !result.timetable) return null;
 
   const staffMap = {};
   const periodsCount = Number(periods) || 8;
@@ -104,7 +104,7 @@ export default function FacultyWorkloadView({ result, days, periods }) {
                                   <span className="fac-subj">{match.subject}</span>
                                 </div>
                               ) : (
-                                <span className="fac-free">—</span>
+                                <span className="fac-free">📚 Library</span>
                               )}
                             </td>
                           );

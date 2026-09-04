@@ -162,7 +162,12 @@ export default function TimetableGrid({
                         if (!cell || cell.type === "free") {
                           return (
                             <td key={`ec-${col.index}`} className="td-empty">
-                              <span className="empty-dash">—</span>
+                              <div className="slot-card slot-library">
+                                <div className="slot-subject">Library</div>
+                                <div className="slot-type-row">
+                                  <span className="type-badge type-library">Free Period</span>
+                                </div>
+                              </div>
                             </td>
                           );
                         }

@@ -594,7 +594,6 @@ class TimetableModel:
     # =============================================================
     # BATCH INFORMATION
     # =============================================================
-
     def batch_name(
         self,
         index
@@ -608,10 +607,10 @@ class TimetableModel:
             batch,
             dict
         ):
-
             return (
                 batch.get("name")
                 or batch.get("batch_name")
+                or batch.get("label")
                 or batch.get("code")
                 or f"Batch {index + 1}"
             )

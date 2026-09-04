@@ -52,68 +52,83 @@ def add_special_constraints(timetable):
     }
 
     # ============================================================
-    # 1. AUDIT ONLY IN P7/P8
+    # 0. FORCE SPECIAL ACTIVITIES TO 0 WHEN NOT CONFIGURED
+    # ============================================================
+    #
+    # If the user sets naan_mudalvan_periods = 0,
+    # ioc_periods = 0, or audit_periods = 0,
+    # force those variables to 0 everywhere.
+    #
+    # Without this, the solver would freely set them
+    # to 1 in P7/P8 to fill empty slots.
+    #
     # ============================================================
 
-    for b in range(len(batches)):
+    audit_periods = get_audit_periods(timetable)
+    ioc_periods = get_ioc_periods(timetable)
+    naan_periods = get_naan_mudalvan_periods(timetable)
 
-        for d in range(days):
+    if naan_periods == 0:
+        for b in range(len(batches)):
+            for d in range(days):
+                for p in range(periods):
+                    model.Add(
+                        naan_mudalvan[b, d, p] == 0
+                    )
 
-            for p in range(periods):
-
-                if p not in allowed_special_periods:
-
+    if audit_periods == 0:
+        for b in range(len(batches)):
+            for d in range(days):
+                for p in range(periods):
                     model.Add(
                         audit[b, d, p] == 0
                     )
 
-    # ============================================================
-    # 2. IOC ONLY IN P7/P8
-    # ============================================================
-
-    for b in range(len(batches)):
-
-        for d in range(days):
-
-            for p in range(periods):
-
-                if p not in allowed_special_periods:
-
+    if ioc_periods == 0:
+        for b in range(len(batches)):
+            for d in range(days):
+                for p in range(periods):
                     model.Add(
                         ioc[b, d, p] == 0
                     )
 
     # ============================================================
-    # 3. NAAN MUDALVAN CONTINUOUS
-    # ============================================================
-    #
-    # If Naan Mudalvan requires N periods:
-    #
-    #     P2 P3 P4
-    #
-    # is valid.
-    #
-    # But:
-    #
-    #     P2 P4 P5
-    #
-    # is invalid.
-    #
-    # The number of required periods is read from:
-    #
-    #     naan_mudalvan_periods
-    #
-    # or:
-    #
-    #     naan_mudalvan_hours
-    #
-    # If neither exists, the default is 0.
-    #
+    # 1. AUDIT ONLY IN P7/P8
     # ============================================================
 
-    naan_periods = get_naan_mudalvan_periods(
-        timetable
-    )
+    if audit_periods > 0:
+        for b in range(len(batches)):
+
+            for d in range(days):
+
+                for p in range(periods):
+
+                    if p not in allowed_special_periods:
+
+                        model.Add(
+                            audit[b, d, p] == 0
+                        )
+
+    # ============================================================
+    # 2. IOC ONLY IN P7/P8
+    # ============================================================
+
+    if ioc_periods > 0:
+        for b in range(len(batches)):
+
+            for d in range(days):
+
+                for p in range(periods):
+
+                    if p not in allowed_special_periods:
+
+                        model.Add(
+                            ioc[b, d, p] == 0
+                        )
+
+    # ============================================================
+    # 3. NAAN MUDALVAN CONTINUOUS
+    # ============================================================
 
     if naan_periods > 0:
 
@@ -270,11 +285,70 @@ def get_naan_mudalvan_periods(timetable):
     )
 
     if value is None:
-
         value = data.get(
             "naan_mudalvan_hours",
             0
         )
+
+    try:
+        return int(value)
+
+    except (TypeError, ValueError):
+
+        return 0
+
+
+# ================================================================
+# HELPER - AUDIT PERIODS
+# ================================================================
+
+def get_audit_periods(timetable):
+    """
+    Read the required number of Audit periods.
+
+    Supported input fields:
+
+        audit_periods
+
+    If not set, returns 0.
+    """
+
+    data = timetable.data
+
+    value = data.get(
+        "audit_periods",
+        0
+    )
+
+    try:
+        return int(value)
+
+    except (TypeError, ValueError):
+
+        return 0
+
+
+# ================================================================
+# HELPER - IOC PERIODS
+# ================================================================
+
+def get_ioc_periods(timetable):
+    """
+    Read the required number of IOC periods.
+
+    Supported input fields:
+
+        ioc_periods
+
+    If not set, returns 0.
+    """
+
+    data = timetable.data
+
+    value = data.get(
+        "ioc_periods",
+        0
+    )
 
     try:
         return int(value)

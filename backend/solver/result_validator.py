@@ -1306,6 +1306,7 @@ def get_subject_faculty(subject):
         or subject.get("faculty_id")
         or subject.get("facultyId")
         or subject.get("teacher")
+        or subject.get("staff")
     )
 
 

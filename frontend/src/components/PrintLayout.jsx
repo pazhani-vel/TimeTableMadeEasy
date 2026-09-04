@@ -70,7 +70,7 @@ export default function PrintLayout({ result, days, periods }) {
                     }
                     const cell = dayRow[c.index];
                     if (!cell || cell.type === "free") {
-                      return <td key={colIdx} className="print-td-empty">—</td>;
+                      return <td key={colIdx} className="print-td-slot"><div className="print-subj">Library</div><div className="print-type">[Library]</div></td>;
                     }
                     return (
                       <td key={colIdx} className="print-td-slot">

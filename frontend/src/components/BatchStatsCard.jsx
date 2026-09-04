@@ -1,15 +1,7 @@
 import React from "react";
 
 export default function BatchStatsCard({ batchId, batch, year, rows, days, periods }) {
-  const batchRows = rows.filter((r) => {
-    if (batchId) {
-      return r.batch_id === batchId || `IT_${r.year}_${r.batch}` === batchId;
-    }
-    if (year && batch) {
-      return Number(r.year) === Number(year) && r.batch === batch;
-    }
-    return r.batch === batch;
-  });
+  const batchRows = rows;
   
   const totalTheory = batchRows.reduce((acc, r) => acc + (Number(r.theory_hours) || 0), 0);
   const totalLab = batchRows.reduce((acc, r) => acc + (r.has_lab ? Number(r.lab_hours) || 0 : 0), 0);

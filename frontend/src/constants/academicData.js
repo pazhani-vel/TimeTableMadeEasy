@@ -30,9 +30,9 @@ export const YEARS = [
 ];
 
 export const BATCH_OPTIONS = [
-  { value: "B1", label: "IT Batch B1" },
-  { value: "B2", label: "IT Batch B2" },
-  { value: "AIDS_B1", label: "AIDS Batch B1" }
+  { value: "B1", label: "Information Technology Batch 1" },
+  { value: "B2", label: "Information Technology Batch 2" },
+  { value: "AIDS_B1", label: "Artificial Intelligence Batch" }
 ];
 
 export const YEAR_TO_SEMESTERS = {
@@ -51,15 +51,15 @@ export const SEMESTER_OPTIONS = [
 ];
 
 export const ALL_IT_BATCHES = [
-  { id: "IT_2_B1", department: "IT", year: 2, batch: "B1", label: "2nd Year - IT Batch B1" },
-  { id: "IT_2_B2", department: "IT", year: 2, batch: "B2", label: "2nd Year - IT Batch B2" },
-  { id: "AIDS_2_B1", department: "AIDS", year: 2, batch: "AIDS_B1", label: "2nd Year - AIDS Batch B1" },
-  { id: "IT_3_B1", department: "IT", year: 3, batch: "B1", label: "3rd Year - IT Batch B1" },
-  { id: "IT_3_B2", department: "IT", year: 3, batch: "B2", label: "3rd Year - IT Batch B2" },
-  { id: "AIDS_3_B1", department: "AIDS", year: 3, batch: "AIDS_B1", label: "3rd Year - AIDS Batch B1" },
-  { id: "IT_4_B1", department: "IT", year: 4, batch: "B1", label: "4th Year - IT Batch B1" },
-  { id: "IT_4_B2", department: "IT", year: 4, batch: "B2", label: "4th Year - IT Batch B2" },
-  { id: "AIDS_4_B1", department: "AIDS", year: 4, batch: "AIDS_B1", label: "4th Year - AIDS Batch B1" }
+  { id: "IT_2_B1", department: "IT", year: 2, batch: "B1", label: "2nd Year - Information Technology Batch 1" },
+  { id: "IT_2_B2", department: "IT", year: 2, batch: "B2", label: "2nd Year - Information Technology Batch 2" },
+  { id: "AIDS_2_B1", department: "AIDS", year: 2, batch: "AIDS_B1", label: "2nd Year - Artificial Intelligence Batch" },
+  { id: "IT_3_B1", department: "IT", year: 3, batch: "B1", label: "3rd Year - Information Technology Batch 1" },
+  { id: "IT_3_B2", department: "IT", year: 3, batch: "B2", label: "3rd Year - Information Technology Batch 2" },
+  { id: "AIDS_3_B1", department: "AIDS", year: 3, batch: "AIDS_B1", label: "3rd Year - Artificial Intelligence Batch" },
+  { id: "IT_4_B1", department: "IT", year: 4, batch: "B1", label: "4th Year - Information Technology Batch 1" },
+  { id: "IT_4_B2", department: "IT", year: 4, batch: "B2", label: "4th Year - Information Technology Batch 2" },
+  { id: "AIDS_4_B1", department: "AIDS", year: 4, batch: "AIDS_B1", label: "4th Year - Artificial Intelligence Batch" }
 ];
 
 export const DEFAULT_LABS = [

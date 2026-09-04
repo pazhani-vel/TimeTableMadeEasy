@@ -401,6 +401,7 @@ def validate_input(data):
             or subject.get("faculty_id")
             or subject.get("facultyId")
             or subject.get("teacher")
+            or subject.get("staff")
         )
 
         if not faculty:

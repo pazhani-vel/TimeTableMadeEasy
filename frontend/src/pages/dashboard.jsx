@@ -8,6 +8,7 @@ import {
   BATCH_OPTIONS,
   YEAR_TO_SEMESTERS,
   SEMESTER_OPTIONS,
+  SAMPLE_CURRICULUM_PRESET,
 } from "../constants/academicData";
 
 import { generateTimetable } from "../api/timetableApi";
@@ -271,14 +272,41 @@ export default function DashBoard() {
             )
         );
 
+      /*
+       * Filter out batches where ALL semesters
+       * for that year+batch are already open.
+       */
+
       return BATCH_OPTIONS.filter(
-        (batch) =>
-          validBatches.has(
-            batch.value
-          )
+        (batch) => {
+          if (!validBatches.has(batch.value)) {
+            return false;
+          }
+
+          const semesters =
+            YEAR_TO_SEMESTERS[
+              Number(newTabYear)
+            ] || [];
+
+          const hasAvailable =
+            semesters.some(
+              (sem) =>
+                !openTabs.some(
+                  (tab) =>
+                    Number(tab.year) ===
+                      Number(newTabYear) &&
+                    tab.batch ===
+                      batch.value &&
+                    Number(tab.semester) ===
+                      Number(sem)
+                )
+            );
+
+          return hasAvailable;
+        }
       );
 
-    }, [newTabYear]);
+    }, [newTabYear, openTabs]);
 
 
   /*
@@ -300,13 +328,37 @@ export default function DashBoard() {
         ] || [];
 
       return SEMESTER_OPTIONS.filter(
-        (option) =>
-          semesterValues.includes(
-            Number(option.value)
-          )
+        (option) => {
+          if (
+            !semesterValues.includes(
+              Number(option.value)
+            )
+          ) {
+            return false;
+          }
+
+          /*
+           * Filter out semesters already open
+           * for this year+batch combo.
+           */
+
+          if (newTabBatch) {
+            return !openTabs.some(
+              (tab) =>
+                Number(tab.year) ===
+                  Number(newTabYear) &&
+                tab.batch ===
+                  newTabBatch &&
+                Number(tab.semester) ===
+                  Number(option.value)
+            );
+          }
+
+          return true;
+        }
       );
 
-    }, [newTabYear]);
+    }, [newTabYear, newTabBatch, openTabs]);
 
 
   /*
@@ -718,14 +770,63 @@ export default function DashBoard() {
 
 
     /*
-     * NEW TAB IS COMPLETELY EMPTY.
+     * AUTO-FILL FROM SAMPLE CURRICULUM PRESET.
+     * Match year + batch + semester to preset entries
+     * and pre-populate the subject rows.
      */
+
+    const presetSubjects =
+      SAMPLE_CURRICULUM_PRESET.filter(
+        (item) =>
+          Number(item.year) ===
+            Number(year) &&
+          item.batch === batch &&
+          (
+            Number(item.semester) ===
+              Number(semester) ||
+            !item.semester
+          )
+      );
+
+    const presetRows =
+      presetSubjects.map(
+        (item) => ({
+          year: Number(year),
+          batch,
+          semester: Number(semester),
+          schedule_id: newTab.id,
+          batch_id:
+            ALL_IT_BATCHES.find(
+              (b) =>
+                Number(b.year) ===
+                  Number(year) &&
+                b.batch === batch
+            )?.id ||
+            `IT_${Number(year)}_${batch}`,
+          sub_code:
+            item.sub_code || "",
+          name:
+            item.name || "",
+          credits:
+            item.credits ?? "",
+          staff:
+            item.staff || "",
+          theory_hours:
+            item.theory_hours ?? "",
+          has_lab:
+            Boolean(item.has_lab),
+          lab_hours:
+            item.lab_hours ?? "",
+          lab_type:
+            item.lab_type || "",
+          subject_type: "regular",
+        })
+      );
 
     setRowsByTab(
       (previous) => ({
         ...previous,
-
-        [newTab.id]: [],
+        [newTab.id]: presetRows,
       })
     );
 
@@ -1407,20 +1508,6 @@ export default function DashBoard() {
               )}
 
 
-              {/* =================================================
-                  NEW TAB BUTTON
-              ================================================= */}
-
-              <button
-                type="button"
-                className="batch-tab-add"
-                onClick={
-                  createNewTab
-                }
-              >
-                + Add Schedule
-              </button>
-
             </div>
 
 
@@ -1572,11 +1659,25 @@ export default function DashBoard() {
                     )
                   )}
 
-                </select>
+                </select>              </div>
 
+
+              {/* ADD SCHEDULE BUTTON */}
+
+              <div className="selector-item" style={{ justifyContent: "flex-end" }}>
+                <label>&nbsp;</label>
+                <button
+                  type="button"
+                  className="batch-tab-add"
+                  onClick={createNewTab}
+                  disabled={!newTabYear || !newTabBatch || !newTabSemester}
+                >
+                  + Add Schedule
+                </button>
               </div>
 
             </div>
+
 
           </div>
 

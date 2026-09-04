@@ -460,6 +460,7 @@ def normalize_subjects(
             or item.get("faculty_id")
             or item.get("facultyId")
             or item.get("teacher")
+            or item.get("staff")
         )
 
         # --------------------------------------------------------
